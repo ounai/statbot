@@ -13,7 +13,9 @@ bot.onText(/\/ap/, (msg, match) => {
 	as.getStat('ap', arr => {
 		var stats = '';
 		
-		for(var agent in arr) stats += agent + ': ' + arr[agent] + ' AP\n';
+		arr.forEach(e => {
+			stats += e[0] + ': ' + e[1] + ' AP\n';
+		});
 		
 		bot.sendMessage(msg.chat.id, stats);
 	});
@@ -27,10 +29,10 @@ bot.onText(/\/stat .+/, (msg, match) => {
 		var empty = true;
 		var stats = '*' + stat[0].toUpperCase() + stat.substring(1) + ':*\n';
 		
-		for(var agent in arr) {
-			stats += agent + ': ' + arr[agent] + '\n';
+		arr.forEach(e => {
+			stats += e[0] + ': ' + e[1] + ' AP\n';
 			empty = false;
-		}
+		});
 		
 		if(empty) bot.sendMessage(msg.chat.id, 'No such stat!');
 		else bot.sendMessage(msg.chat.id, stats, { parse_mode: 'Markdown' });

@@ -24,7 +24,11 @@ module.exports.getStat = (statName, callback) => {
 		
 		for(var agent in stats)
 			if(stats[agent][statName] !== undefined)
-				result[agent] = stats[agent][statName];
+				result.push([ agent, stats[agent][statName] ]);
+		
+		result.sort((a, b) => {
+			return b[1] - a[1];
+		});
 		
 		callback(result);
 	});
