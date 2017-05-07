@@ -19,6 +19,24 @@ bot.onText(/\/ap/, (msg, match) => {
 	});
 });
 
+// /stat
+bot.onText(/\/stat .+/, (msg, match) => {
+	var stat = msg.text.split(' ')[1].toLowerCase();
+	
+	as.getStat(stat, arr => {
+		var empty = true;
+		var stats = '*' + stat[0].toUpperCase() + stat.substring(1) + ':*\n';
+		
+		for(var agent in arr) {
+			stats += agent + ': ' + arr[agent] + '\n';
+			empty = false;
+		}
+		
+		if(empty) bot.sendMessage(msg.chat.id, 'No such stat!');
+		else bot.sendMessage(msg.chat.id, stats, { parse_mode: 'Markdown' });
+	});
+});
+
 bot.on('message', msg => {
 	const chatId = msg.chat.id;
 	const firstName = msg.from.first_name;

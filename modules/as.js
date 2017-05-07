@@ -22,7 +22,9 @@ module.exports.getStat = (statName, callback) => {
 	getStats((stats) => {
 		var result = [];
 		
-		for(var agent in stats) result[agent] = stats[agent][statName];
+		for(var agent in stats)
+			if(stats[agent][statName] !== undefined)
+				result[agent] = stats[agent][statName];
 		
 		callback(result);
 	});
