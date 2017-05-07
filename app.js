@@ -30,7 +30,7 @@ bot.onText(/\/stat .+/, (msg, match) => {
 		var stats = '*' + stat[0].toUpperCase() + stat.substring(1) + ':*\n';
 		
 		arr.forEach(e => {
-			stats += e[0] + ': ' + e[1] + ' AP\n';
+			stats += e[0] + ': ' + e[1] + '\n';
 			empty = false;
 		});
 		
