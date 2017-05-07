@@ -6,6 +6,19 @@ var config = utilsModule.config, debug = utilsModule.debug;
 var botModule = require('./modules/bot');
 var bot = botModule.get, botId = botModule.id;
 
+var as = require('./modules/as');
+
+// /ap
+bot.onText(/\/ap/, (msg, match) => {
+	as.getStat('ap', arr => {
+		var stats = '';
+		
+		for(var agent in arr) stats += agent + ': ' + arr[agent] + ' AP\n';
+		
+		bot.sendMessage(msg.chat.id, stats);
+	});
+});
+
 bot.on('message', msg => {
 	const chatId = msg.chat.id;
 	const firstName = msg.from.first_name;
@@ -21,13 +34,13 @@ bot.on('message', msg => {
 			if(msg.new_chat_member.id === id) {
 				console.log('I have been added to group ' + msg.chat.id);
 				
-				if(config('group-id')[0] === '#' || config('group-id').length === 0) {
+				if(config('telegram-group-id')[0] === '#' || config('telegram-group-id').length === 0) {
 					bot.sendMessage(chatId, 'Group id:').then(() => {
 						bot.sendMessage(chatId, chatId);
 						bot.leaveChat(chatId);
 					});
-				} else if(config('group-id') != chatId) {
-					console.log('Group "' + msg.chat.id + '" is not "' + config('group-id') + '", leaving...');
+				} else if(config('telegram-group-id') != chatId) {
+					console.log('Group "' + msg.chat.id + '" is not "' + config('telegram-group-id') + '", leaving...');
 					bot.leaveChat(chatId);
 				}
 			}

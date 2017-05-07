@@ -5,7 +5,7 @@ var tgbot = require('node-telegram-bot-api');
 var utilsModule = require('./utils');
 var config = utilsModule.config, debug = utilsModule.debug;
 
-var bot = new tgbot(config('bot-token'), { polling: true }), id;
+var bot = new tgbot(config('telegram-bot-token'), { polling: true }), id;
 
 bot.getMe().then(me => {
 	id = me.id;

@@ -11,6 +11,7 @@ try {
 }
 
 module.exports.config = key => {
+	if(config[key] === undefined) throw 'undefined config key ' + key;
 	return config[key];
 };
 
