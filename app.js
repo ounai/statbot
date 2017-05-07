@@ -8,26 +8,15 @@ var bot = botModule.get, botId = botModule.id;
 
 var as = require('./modules/as');
 
-// /ap
-bot.onText(/\/ap/, (msg, match) => {
-	as.getStat('ap', arr => {
-		var stats = '';
-		
-		arr.forEach(e => {
-			stats += e[0] + ': ' + e[1] + ' AP\n';
-		});
-		
-		bot.sendMessage(msg.chat.id, stats);
-	});
-});
-
 // /stat
 bot.onText(/\/stat .+/, (msg, match) => {
+	debug('/stat invoked: ' + msg.text);
+	
 	var stat = msg.text.split(' ')[1].toLowerCase();
 	
-	as.getStat(stat, arr => {
+	as.getStat(stat, 'now', arr => {
 		var empty = true;
-		var stats = '*' + stat[0].toUpperCase() + stat.substring(1) + ':*\n';
+		var stats = '';
 		
 		arr.forEach(e => {
 			stats += e[0] + ': ' + e[1] + '\n';
@@ -35,7 +24,53 @@ bot.onText(/\/stat .+/, (msg, match) => {
 		});
 		
 		if(empty) bot.sendMessage(msg.chat.id, 'No such stat!');
-		else bot.sendMessage(msg.chat.id, stats, { parse_mode: 'Markdown' });
+		else bot.sendMessage(msg.chat.id, stats, {
+			reply_to_message_id: msg.message_id
+		});
+	});
+});
+
+// /week
+bot.onText(/\/week .+/, (msg, match) => {
+	debug('/week invoked: ' + msg.text);
+	
+	var stat = msg.text.split(' ')[1].toLowerCase();
+	
+	as.getStat(stat, 'week', arr => {
+		var empty = true;
+		var stats = '';
+		
+		arr.forEach(e => {
+			stats += e[0] + ': ' + e[1] + '\n';
+			empty = false;
+		});
+		
+		if(empty) bot.sendMessage(msg.chat.id, 'No such stat!');
+		else bot.sendMessage(msg.chat.id, stats, {
+			reply_to_message_id: msg.message_id
+		});
+	});
+});
+
+// /month
+bot.onText(/\/month .+/, (msg, match) => {
+	debug('/month invoked: ' + msg.text);
+	
+	var stat = msg.text.split(' ')[1].toLowerCase();
+	
+	as.getStat(stat, 'month', arr => {
+		var empty = true;
+		var stats = '';
+		
+		arr.forEach(e => {
+			stats += e[0] + ': ' + e[1] + '\n';
+			empty = false;
+		});
+		
+		if(empty) bot.sendMessage(msg.chat.id, 'No such stat!');
+		else bot.sendMessage(msg.chat.id, stats, {
+			reply_to_message_id: msg.message_id
+		});
 	});
 });
 
