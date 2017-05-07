@@ -1,0 +1,6 @@
+{
+	"debug-mode": true,
+	"bot-token": "Telegram bot token. Talk to @BotFather if you don't have one.",
+	"agentstats-token": "Agent Stats API token. You can get one from the 'Preferences' page on agent-stats.com",
+	"group-id": "# Id of the group you want to use the bot with. If you don't know it, start the bot without it and add it to the group."
+}
