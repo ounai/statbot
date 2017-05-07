@@ -5,5 +5,5 @@
 	"telegram-group-id": "# Id of the group you want to use the bot with. If you don't know it, start the bot without it and add it to the group.",
 	
 	"agent-stats-key": "Agent Stats API key. You can get one from the 'Preferences' page on agent-stats.com",
-	"agent-stats-group-id": "Agent Stats group id. You can get it from the 'Group' page on agent-stats.com"
+	"agent-stats-group-id": "Agent Stats group id. You can get it from the 'Groups' page on agent-stats.com"
 }

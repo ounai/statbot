@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/ounai/statbot#readme",
   "dependencies": {
-    "node-telegram-bot-api": "^0.27.1"
+    "node-telegram-bot-api": "^0.27.1",
+    "request": "^2.81.0"
   }
 }
