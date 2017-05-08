@@ -74,6 +74,42 @@ bot.onText(/\/month .+/, (msg, match) => {
 	});
 });
 
+// /when
+bot.onText(/\/when .+ .+/, (msg, match) => {
+	debug('/when invoked: ' + msg.text);
+	
+	var username = msg.text.split(' ')[1].toLowerCase();
+	var medal = msg.text.split(' ')[2].toLowerCase();
+	
+	as.getMedal(medal, username, '2012-01-01', arr => {
+		if(typeof arr === 'string') {
+			bot.sendMessage(msg.chat.id, arr, {
+				reply_to_message_id: msg.message_id
+			});
+			
+			return;
+		}
+		
+		if(arr == undefined) {
+			bot.sendMessage(msg.chat.id, 'Usage: /when <agent name> <stat name>', {
+				reply_to_message_id: msg.message_id
+			});
+			return;
+		}
+		
+		debug(arr);
+		
+		var dates = '';
+		arr.forEach(e => {
+			dates += e + '\n';
+		});
+		
+		bot.sendMessage(msg.chat.id, dates, {
+			reply_to_message_id: msg.message_id
+		});
+	});
+});
+
 bot.on('message', msg => {
 	const chatId = msg.chat.id;
 	const firstName = msg.from.first_name;

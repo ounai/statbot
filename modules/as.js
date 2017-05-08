@@ -42,6 +42,40 @@ var getStats = module.exports.getStats = (type, callback) => {
 	});
 };
 
+var getMedals = module.exports.getMedals = (username, startdate, callback) => {
+	if(username == config('agent-name')) {
+		request({
+			url: 'https://api.agent-stats.com/progress/' + startdate,
+			headers: {
+				'AS-Key': config('agent-stats-key')
+			}
+		}, (err, res, body) => {
+			if(err) throw err;
+			
+			callback(JSON.parse(body));
+		});
+	} else {
+		request({
+			url: 'https://api.agent-stats.com/share/' + username + '/' + startdate,
+			headers: {
+				'AS-Key': config('agent-stats-key')
+			}
+		}, (err, res, body) => {
+			if(err) throw err;
+			
+			var obj = JSON.parse(body);
+			if(obj.error) {
+				debug(obj);
+				
+				if(obj.error.indexOf('username not found') !== -1)
+					callback(username + ' isn\'t sharing their stats.\n'
+						+ 'In order to do so, they\'ll need to add "'
+						+ config('agent-name') + '" to their sharelist.');
+			} else callback(obj);
+		});
+	}
+};
+
 module.exports.getStat = (statName, type, callback) => {
 	getStats(type, stats => {
 		var result = [];
@@ -61,3 +95,27 @@ module.exports.getStat = (statName, type, callback) => {
 	});
 };
 
+module.exports.getMedal = (medalName, username, startdate, callback) => {
+	getMedals(username, startdate, stats => {
+		if(typeof stats === 'string') callback(stats);
+		else if(stats == undefined) callback();
+		else for(var key in stats) {
+			if(stats[key] == undefined || stats[key][medalName] == undefined) {
+				callback();
+				return;
+			}
+			
+			var result = [];
+			
+			for(var type of ['bronze', 'silver', 'gold', 'platinum', 'black'])
+				if(stats[key][medalName]['date'][type] !== 1)
+					result.push(type + ' on ' + stats[key][medalName]['date'][type]
+						+ ' (' + stats[key][medalName]['miss'][type] + ' '
+						+ suffixes[medalName] + ' left)');
+			
+			callback(result);
+			
+			return;
+		}
+	});
+};
