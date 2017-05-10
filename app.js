@@ -78,7 +78,7 @@ bot.onText(/\/month .+/, (msg, match) => {
 bot.onText(/\/when .+ .+/, (msg, match) => {
 	debug('/when invoked: ' + msg.text);
 	
-	var username = msg.text.split(' ')[1].toLowerCase();
+	var username = msg.text.split(' ')[1];
 	var medal = msg.text.split(' ')[2].toLowerCase();
 	
 	as.getMedal(medal, username, '2012-01-01', arr => {
@@ -94,6 +94,7 @@ bot.onText(/\/when .+ .+/, (msg, match) => {
 			bot.sendMessage(msg.chat.id, 'Usage: /when <agent name> <stat name>', {
 				reply_to_message_id: msg.message_id
 			});
+			
 			return;
 		}
 		
